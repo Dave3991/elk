@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  filebeat:
+    #command: filebeat -e -d "publish" #for debug
+    image: docker.elastic.co/beats/filebeat:6.2.1
+    user: root
+    restart: unless-stopped
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    - ./etc/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+    - /var/log/:/var/host_log/:ro #logs from host server as volume for reading logs

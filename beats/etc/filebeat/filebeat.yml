@@ -1,0 +1,27 @@
+#filebeat.autodiscover:
+#  providers:
+#    - type: docker
+#      templates:
+#        - condition:
+#            not:
+#              contains:
+#                docker.container.image: filebeat
+#          config:
+#            - type: docker
+#              containers.ids:
+#                - "${data.docker.container.id}"
+#filebeat:
+#  fields:
+#      service: test01
+filebeat.prospectors:
+- type: log
+  enabled: true
+  paths:
+    - /var/host_log/*.log
+#    - /var/log/*/*.log
+    - /var/host_log/*/*.log
+
+logging.metrics.enabled: false
+output.logstash:
+ bulk_max_size: 1024
+ hosts: ["172.24.0.3:5044"]
